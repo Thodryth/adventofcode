@@ -12,7 +12,8 @@ public class DayOne {
         var highestNumber = elfService.findHighestTonnage(elfArmy);
         var sortedTonnages = elfService.getTonnagesAsSortedList(elfArmy);
         var threeHighest = elfService.getHighestThree(sortedTonnages);
-        System.out.println(threeHighest);
+        System.out.println("Highest: " + highestNumber);
+        System.out.println("Highest three: " + threeHighest);
     }
 
 }
