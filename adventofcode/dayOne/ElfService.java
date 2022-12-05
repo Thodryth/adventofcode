@@ -1,4 +1,4 @@
-package adventofcode;
+package adventofcode.dayOne;
 
 import java.util.List;
 import java.util.stream.Collectors;

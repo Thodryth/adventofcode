@@ -1,4 +1,4 @@
-package adventofcode;
+package adventofcode.defaults;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,6 +24,7 @@ public class Reader {
 
         } catch (Exception e) {
             System.out.println("That went wrong my dude");
+            System.out.println(e);
         }
 
         return array;
