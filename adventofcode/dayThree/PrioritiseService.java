@@ -16,9 +16,10 @@ public class PrioritiseService {
     private int priority = 1;
     private int numberOfChars = 26;
 
+    private int totalTriplePrio = 0;
     private int totalPrio = 0;
 
-    Map<String, Integer> charToAscii = new HashMap<>();
+    Map<String, Integer> charToAscii = this.createCharToAsciiMap();
 
     public Map<String, Integer> createCharToAsciiMap() {
         var map = new HashMap<String, Integer>();
@@ -37,16 +38,31 @@ public class PrioritiseService {
     }
 
     public int calculatePriority(List<String> charList) {
-        var priorityMap = this.createCharToAsciiMap();
 
         charList.forEach(entry -> {
             var text1 = entry.substring(0, entry.length() / 2);
             var text2 = entry.substring(entry.length() / 2, entry.length());
             var foundPair = stringService.findCharPairInStrings(text1, text2);
-            var charPrio = priorityMap.get(foundPair);
+            var charPrio = charToAscii.get(foundPair);
             this.totalPrio += charPrio;
         });
         return this.totalPrio;
+    }
+
+    public int calculateThreePrioriy(List<String> charList) {
+        var j = 1;
+        var k = 2;
+        for (int i = 0; k < 300; i += 3) {
+            var foundPairs = this.stringService.findMatchingChars(charList.get(i), charList.get(j));
+            StringBuilder builder = new StringBuilder();
+            foundPairs.forEach(builder::append);
+            String foundMorePairs = this.stringService.findCharPairInStrings(charList.get(k), builder.toString());
+            var charPrio = charToAscii.get(foundMorePairs);
+            totalTriplePrio += charPrio;
+            j += 3;
+            k += 3;
+        }
+        return totalTriplePrio;
     }
 
 }
