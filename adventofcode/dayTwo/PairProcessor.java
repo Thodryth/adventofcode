@@ -1,13 +1,13 @@
 package adventofcode.dayTwo;
 
-public class Pair {
+public class PairProcessor {
     String enemy;
     String mine;
     String totalString;
     int minePoints;
     int totalPoints;
 
-    public Pair(String pairing) {
+    public PairProcessor(String pairing) {
         var values = pairing.split(" ");
         this.totalString = pairing;
         this.setEnemy(values[0]);
@@ -16,7 +16,7 @@ public class Pair {
         this.setTotalPoints(this.calculateBattlePoints());
     }
 
-    public Pair(String pairing, boolean success) {
+    public PairProcessor(String pairing, boolean success) {
         if (!success) {
             System.out.println("LOST");
         } else {

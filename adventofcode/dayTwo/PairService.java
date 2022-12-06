@@ -7,26 +7,26 @@ import java.util.stream.Collectors;
 
 public class PairService {
 
-    public List<Pair> createPairs(String[] fileInput) {
-        var pairList = new ArrayList<Pair>();
+    public List<PairProcessor> createPairs(String[] fileInput) {
+        var pairList = new ArrayList<PairProcessor>();
         Arrays.asList(fileInput).forEach(entry -> {
-            var pair = new Pair(entry);
+            var pair = new PairProcessor(entry);
             pairList.add(pair);
         });
         return pairList;
     }
 
-    public List<Pair> createPairsPerfect(String[] fileInput) {
-        var pairList = new ArrayList<Pair>();
+    public List<PairProcessor> createPairsPerfect(String[] fileInput) {
+        var pairList = new ArrayList<PairProcessor>();
         Arrays.asList(fileInput).forEach(entry -> {
-            var pair = new Pair(entry, true);
+            var pair = new PairProcessor(entry, true);
             pairList.add(pair);
         });
         return pairList;
     }
 
-    public int calculateTotalScore(List<Pair> pairs) {
-        return pairs.stream().map(Pair::getTotalPoints).collect(Collectors.summingInt(Integer::intValue));
+    public int calculateTotalScore(List<PairProcessor> pairs) {
+        return pairs.stream().map(PairProcessor::getTotalPoints).collect(Collectors.summingInt(Integer::intValue));
     }
 
 }
