@@ -31,4 +31,8 @@ public class PrioritiseService {
         return map;
     }
 
+    public int calculatePriority(String charList) {
+        return 0;
+    }
+
 }
