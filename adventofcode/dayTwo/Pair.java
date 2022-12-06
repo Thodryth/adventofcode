@@ -13,6 +13,22 @@ public class Pair {
         this.setEnemy(values[0]);
         this.setMine(values[1]);
         this.setMinePoints(this.calculateDirectPoints(this.getMine()));
+        this.setTotalPoints(this.calculateBattlePoints());
+    }
+
+    public Pair(String pairing, boolean success) {
+        if (!success) {
+            System.out.println("LOST");
+        } else {
+
+            var values = pairing.split(" ");
+            this.totalString = pairing;
+            this.setEnemy(values[0]);
+            this.setMine(values[1]);
+            this.createPerfectAnswer(this.getMine());
+            this.setMinePoints(this.calculateDirectPoints(this.getMine()));
+            this.setTotalPoints(this.calculateBattlePoints());
+        }
     }
 
     public String getEnemy() {
@@ -62,50 +78,50 @@ public class Pair {
         return points;
     }
 
-    /*
-     * X Papier
-     * Y Scheere
-     * Z Stein
-     * 
-     * A Stein
-     * B Paper
-     * C Scheere
-     */
+    private void createPerfectAnswer(String myChar) {
+        switch (myChar) {
+            case ("X"):
+                this.createLose();
+                break;
+            case ("Y"):
+                this.createDraw();
+                break;
+            case ("Z"):
+                this.createWin();
+                break;
+            default:
+                break;
+
+        }
+    }
+
     private int calculateBattlePoints() {
-        int totalPoints = this.getMinePoints();
+        int score = this.getMinePoints();
 
-        switch (this.totalString) {
+        switch (this.enemy + " " + this.mine) {
             case ("A X"):
-
+                score += 3;
                 break;
             case ("A Y"):
-
-                break;
-            case ("A Z"):
-                break;
-
-            case ("B X"):
-
+                score += 6;
                 break;
             case ("B Y"):
-
+                score += 3;
                 break;
             case ("B Z"):
-
+                score += 6;
                 break;
             case ("C X"):
-
-                break;
-            case ("C Y"):
-
+                score += 6;
                 break;
             case ("C Z"):
-
+                score += 3;
+                break;
             default:
                 break;
         }
 
-        return totalPoints;
+        return score;
     }
 
     public int getTotalPoints() {
@@ -116,4 +132,51 @@ public class Pair {
         this.totalPoints = totalPoints;
     }
 
+    public void createDraw() {
+        switch (getEnemy()) {
+            case ("A"):
+                setMine("X");
+                break;
+            case ("B"):
+                setMine("Y");
+                break;
+            case ("C"):
+                setMine("Z");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void createWin() {
+        switch (getEnemy()) {
+            case ("A"):
+                setMine("Y");
+                break;
+            case ("B"):
+                setMine("Z");
+                break;
+            case ("C"):
+                setMine("X");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void createLose() {
+        switch (getEnemy()) {
+            case ("A"):
+                setMine("Z");
+                break;
+            case ("B"):
+                setMine("X");
+                break;
+            case ("C"):
+                setMine("Y");
+                break;
+            default:
+                break;
+        }
+    }
 }

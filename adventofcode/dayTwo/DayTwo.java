@@ -9,7 +9,9 @@ public class DayTwo {
         PairService pairService = new PairService();
 
         var list = reader.loadFileToArray("adventofcode/dayTwo/day2");
-        var pairs = pairService.createPairs(list);
-        pairs.forEach(pair -> System.out.println(pair.minePoints));
+        var pairs = pairService.createPairsPerfect(list);
+
+        var totalScore = pairService.calculateTotalScore(pairs);
+        System.out.println("Score: " + totalScore);
     }
 }
