@@ -1,5 +1,7 @@
 package adventofcode.dayThree;
 
+import java.util.Arrays;
+
 import adventofcode.defaults.Reader;
 
 public class DayThree {
@@ -10,7 +12,8 @@ public class DayThree {
 
         var file = reader.loadFileToArray("adventofcode/dayThree/day3");
 
-        var priorityMap = prioritiseService.createCharToAsciiMap();
+        var result = prioritiseService.calculatePriority(Arrays.asList(file));
+        System.out.println(result);
 
     }
 }
