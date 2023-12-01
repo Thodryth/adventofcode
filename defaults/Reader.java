@@ -1,4 +1,4 @@
-package adventofcode.defaults;
+package defaults;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

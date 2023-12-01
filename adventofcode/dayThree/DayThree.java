@@ -1,8 +1,7 @@
 package adventofcode.dayThree;
 
 import java.util.Arrays;
-
-import adventofcode.defaults.Reader;
+import defaults.Reader;
 
 public class DayThree {
     public static void main(String[] args) {

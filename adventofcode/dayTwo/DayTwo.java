@@ -1,6 +1,6 @@
 package adventofcode.dayTwo;
 
-import adventofcode.defaults.Reader;
+import defaults.Reader;
 
 public class DayTwo {
 

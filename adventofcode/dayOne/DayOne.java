@@ -1,6 +1,6 @@
 package adventofcode.dayOne;
 
-import adventofcode.defaults.Reader;
+import defaults.Reader;
 
 public class DayOne {
 

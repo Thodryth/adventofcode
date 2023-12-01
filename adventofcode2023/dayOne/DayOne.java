@@ -1,9 +1,6 @@
-package adventofcode_2023.dayOne;
+package adventofcode2023.dayOne;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import adventofcode.defaults.Reader;
+import defaults.Reader;
 
 public class DayOne {
 
@@ -11,12 +8,25 @@ public class DayOne {
 
         Reader reader = new Reader();
 
-        var input = reader.loadFileToArray("adventofcode_2023\\dayOne\\puzzleInput");
+        var puzzleInput = reader.loadFileToArray("adventofcode2023/dayOne/puzzleInput");
+        var testInputOne = reader.loadFileToArray("adventofcode2023/dayOne/testInputOne");
+        var testInputTwo = reader.loadFileToArray("adventofcode2023/dayOne/testInputTwo");
 
-        System.out.println("Summ: " + summOfFirstAndLastDigit(input));
+        runTest(testInputOne, testInputTwo);
 
-        System.out.println("Corrected Summ: " + summOfFirstAndLastDigit(makeWordsToDigits(input)));
+        runPuzzle(puzzleInput);
+    }
 
+    public static void runTest(String[] inputOne, String[] inputTwo) {
+        System.out.println("- Run code against testInput");
+        System.out.println("First: " + summOfFirstAndLastDigit(inputOne));
+        System.out.println("Second: " + summOfFirstAndLastDigit(makeWordsToDigits(inputTwo)));
+    }
+
+    public static void runPuzzle(String[] input) {
+        System.out.println("- Run code against puzzleInput");
+        System.out.println("First: " + summOfFirstAndLastDigit(input));
+        System.out.println("Second: " + summOfFirstAndLastDigit(makeWordsToDigits(input)));
     }
 
     public static int summOfFirstAndLastDigit(String[] lines) {
