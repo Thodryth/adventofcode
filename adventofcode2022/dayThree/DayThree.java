@@ -1,4 +1,4 @@
-package adventofcode.dayThree;
+package adventofcode2022.dayThree;
 
 import java.util.Arrays;
 import defaults.Reader;
@@ -8,7 +8,7 @@ public class DayThree {
         Reader reader = new Reader();
         PrioritiseService prioritiseService = new PrioritiseService();
 
-        var file = reader.loadFileToArray("adventofcode/dayThree/day3");
+        var file = reader.loadFileToArray("adventofcode2022/dayThree/day3");
 
         var resultOne = prioritiseService.calculatePriority(Arrays.asList(file));
         System.out.println(resultOne);

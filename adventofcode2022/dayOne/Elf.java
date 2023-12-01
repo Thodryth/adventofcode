@@ -1,4 +1,4 @@
-package adventofcode.dayOne;
+package adventofcode2022.dayOne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,7 @@ public class Elf {
     }
 
     public int getTotalTonnage() {
-        return packs.stream()
-                .collect(Collectors.summingInt(Integer::intValue));
+        return packs.stream().collect(Collectors.summingInt(Integer::intValue));
     }
 
     public int getLefId() {

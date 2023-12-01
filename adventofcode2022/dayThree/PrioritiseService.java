@@ -1,4 +1,4 @@
-package adventofcode.dayThree;
+package adventofcode2022.dayThree;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +56,8 @@ public class PrioritiseService {
             var foundPairs = this.stringService.findMatchingChars(charList.get(i), charList.get(j));
             StringBuilder builder = new StringBuilder();
             foundPairs.forEach(builder::append);
-            String foundMorePairs = this.stringService.findCharPairInStrings(charList.get(k), builder.toString());
+            String foundMorePairs =
+                    this.stringService.findCharPairInStrings(charList.get(k), builder.toString());
             var charPrio = charToAscii.get(foundMorePairs);
             totalTriplePrio += charPrio;
             j += 3;

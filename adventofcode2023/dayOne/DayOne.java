@@ -18,15 +18,15 @@ public class DayOne {
     }
 
     public static void runTest(String[] inputOne, String[] inputTwo) {
-        System.out.println("- Run code against testInput");
-        System.out.println("First: " + summOfFirstAndLastDigit(inputOne));
-        System.out.println("Second: " + summOfFirstAndLastDigit(makeWordsToDigits(inputTwo)));
+        System.out.println("\n<- Evaluate TestInput ->");
+        System.out.println("Summ 1: " + summOfFirstAndLastDigit(inputOne));
+        System.out.println("Summ 2: " + summOfFirstAndLastDigit(makeWordsToDigits(inputTwo)));
     }
 
     public static void runPuzzle(String[] input) {
-        System.out.println("- Run code against puzzleInput");
-        System.out.println("First: " + summOfFirstAndLastDigit(input));
-        System.out.println("Second: " + summOfFirstAndLastDigit(makeWordsToDigits(input)));
+        System.out.println("\n<- Evaluate PuzzleInput ->");
+        System.out.println("Summ 1: " + summOfFirstAndLastDigit(input));
+        System.out.println("Summ 2: " + summOfFirstAndLastDigit(makeWordsToDigits(input)));
     }
 
     public static int summOfFirstAndLastDigit(String[] lines) {

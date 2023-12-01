@@ -1,4 +1,4 @@
-package adventofcode.dayOne;
+package adventofcode2022.dayOne;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +24,7 @@ public class ElfService {
     }
 
     public int getHighestThree(List<Integer> values) {
-        return values.get(values.size() - 1) + values.get(values.size() - 2) + values.get(values.size() - 3);
+        return values.get(values.size() - 1) + values.get(values.size() - 2)
+                + values.get(values.size() - 3);
     }
 }

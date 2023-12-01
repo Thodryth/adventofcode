@@ -1,4 +1,4 @@
-package adventofcode.dayTwo;
+package adventofcode2022.dayTwo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,8 @@ public class PairService {
     }
 
     public int calculateTotalScore(List<PairProcessor> pairs) {
-        return pairs.stream().map(PairProcessor::getTotalPoints).collect(Collectors.summingInt(Integer::intValue));
+        return pairs.stream().map(PairProcessor::getTotalPoints)
+                .collect(Collectors.summingInt(Integer::intValue));
     }
 
 }

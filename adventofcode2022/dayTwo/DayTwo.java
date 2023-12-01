@@ -1,4 +1,4 @@
-package adventofcode.dayTwo;
+package adventofcode2022.dayTwo;
 
 import defaults.Reader;
 
@@ -8,7 +8,7 @@ public class DayTwo {
         Reader reader = new Reader();
         PairService pairService = new PairService();
 
-        var list = reader.loadFileToArray("adventofcode/dayTwo/day2");
+        var list = reader.loadFileToArray("adventofcode2022/dayTwo/day2");
         var pairsperfect = pairService.createPairsPerfect(list);
         var pairs = pairService.createPairs(list);
 

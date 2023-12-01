@@ -1,4 +1,4 @@
-package adventofcode.dayThree;
+package adventofcode2022.dayThree;
 
 import java.util.HashSet;
 import java.util.Set;

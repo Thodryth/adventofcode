@@ -1,4 +1,4 @@
-package adventofcode.dayOne;
+package adventofcode2022.dayOne;
 
 import defaults.Reader;
 
@@ -9,7 +9,7 @@ public class DayOne {
         ElfArmyCreator elfArmyCreator = new ElfArmyCreator();
         ElfService elfService = new ElfService();
 
-        var fileAsArray = reader.loadFileToArray("adventofcode/dayOne/day1");
+        var fileAsArray = reader.loadFileToArray("adventofcode2022/dayOne/day1");
         var elfArmy = elfArmyCreator.createElfArmy(fileAsArray);
         var highestNumber = elfService.findHighestTonnage(elfArmy);
         var sortedTonnages = elfService.getTonnagesAsSortedList(elfArmy);

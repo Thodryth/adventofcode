@@ -1,4 +1,4 @@
-package adventofcode.dayTwo;
+package adventofcode2022.dayTwo;
 
 public class PairProcessor {
     String enemy;
