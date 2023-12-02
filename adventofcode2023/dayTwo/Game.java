@@ -2,7 +2,6 @@ package adventofcode2023.dayTwo;
 
 public class Game {
     int id;
-    String name;
 
     int blue = 0;
     int red = 0;
