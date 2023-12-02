@@ -15,7 +15,6 @@ public class DayTwo {
     private static final int GREEN = 13;
     private static final int BLUE = 14;
 
-
     public static void main(String[] args) {
 
         Reader reader = new Reader();
@@ -46,10 +45,19 @@ public class DayTwo {
         Arrays.asList(input).forEach(line -> listOfGames.add(generateGameFromLine(line)));
         List<Game> possibleGames = findPossibleGames(listOfGames);
         System.out.println("Number of possible Games: " + possibleGames.size());
+        System.out.println("Power Of All Games: " + getPowerOfAllGames(listOfGames));
         return possibleGames.stream().map(game -> game.id)
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
+    public static int getPowerOfAllGames(List<Game> allGames) {
+        return allGames.stream().map(DayTwo::getPowerOfGame)
+                .collect(Collectors.summingInt(Integer::intValue));
+    }
+
+    public static int getPowerOfGame(Game game) {
+        return game.blue * game.red * game.green;
+    }
 
     public static Game generateGameFromLine(String line) {
         List<SimpleEntry<Integer, String>> allPairsInGame = getColorAmountList(line);
