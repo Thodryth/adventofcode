@@ -44,8 +44,8 @@ public class DayTwo {
         List<Game> listOfGames = new ArrayList<>();
         Arrays.asList(input).forEach(line -> listOfGames.add(generateGameFromLine(line)));
         List<Game> possibleGames = findPossibleGames(listOfGames);
-        System.out.println("Number of possible Games: " + possibleGames.size());
         System.out.println("Power Of All Games: " + getPowerOfAllGames(listOfGames));
+        System.out.println("Number of possible Games: " + possibleGames.size());
         return possibleGames.stream().map(game -> game.id)
                 .collect(Collectors.summingInt(Integer::intValue));
     }
