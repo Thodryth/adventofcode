@@ -3,7 +3,9 @@ package adventofcode2023.dayTwo;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -14,6 +16,13 @@ public class DayTwo {
     private static final int RED = 12;
     private static final int GREEN = 13;
     private static final int BLUE = 14;
+
+    private static final int PUZZLE_SUM = 2476;
+    private static final int PUZZLE_POWER = 54911;
+    private static final int TEST_SUM = 8;
+    private static final int TEST_POWER = 2286;
+
+    private static final Map<String, Integer> results = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -31,10 +40,15 @@ public class DayTwo {
         List<Game> listOfGames = Arrays.asList(input).stream().map(DayTwo::generateGameFromLine)
                 .collect(Collectors.toList());
 
-
         System.out.println("\nTestType: " + type + "\n Power of all games is: "
                 + getPowerOfAllGames(listOfGames) + " \n IdSumm for possible Games: "
                 + getIdSummForPossibleGames(listOfGames));
+
+        results.put("POWER", getPowerOfAllGames(listOfGames));
+        results.put("SUM", getIdSummForPossibleGames(listOfGames));
+        runTest(results);
+
+
     }
 
     private static int getIdSummForPossibleGames(List<Game> listOfGames) {
@@ -52,7 +66,7 @@ public class DayTwo {
         List<SimpleEntry<Integer, String>> allPairsInGame = getColorAmountList(line);
         Game game = new Game();
         createGameFromEntries(game, allPairsInGame);
-        game.id = getGameId(line);
+        game.id = findFirstNumber(line);
         return game;
     }
 
@@ -94,21 +108,15 @@ public class DayTwo {
         return allPairsInGame;
     }
 
-    public static int findNumbers(String substring) {
+    public static int findFirstNumber(String substring) {
         Pattern digitsOnly = Pattern.compile("\\d+");
         Matcher matcher = digitsOnly.matcher(substring);
         matcher.find();
         return Integer.parseInt(matcher.group());
     }
 
-    public static int getGameId(String line) {
-        String gameIndexString = line.substring(0, line.indexOf(":"));
-        return findNumbers(gameIndexString);
-    }
-
-
     public static SimpleEntry<Integer, String> mapFieldToAmount(String entry) {
-        int number = findNumbers(entry);
+        int number = findFirstNumber(entry);
         String name = entry.replace(String.valueOf(number), "");
         name = name.trim();
         return new SimpleEntry<>(number, name);
@@ -123,6 +131,15 @@ public class DayTwo {
             }
         });
         return possibleGames;
+    }
+
+    public static void runTest(Map<String, Integer> results) {
+        if (results.get("SUM") != PUZZLE_SUM && results.get("SUM") != TEST_SUM)
+            throw new RuntimeException("Sum calculation went wrong");
+        if (results.get("POWER") != PUZZLE_POWER && results.get("POWER") != TEST_POWER)
+            throw new RuntimeException("Power calculation went wrong");
+
+        System.out.println("\n Tests against results run successfully");
     }
 }
 
