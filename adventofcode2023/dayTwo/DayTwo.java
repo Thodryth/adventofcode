@@ -23,21 +23,14 @@ public class DayTwo {
 
         var testInput = reader.loadFileToArray("adventofcode2023/dayTwo/testInput");
 
-        runTest(testInput);
-
-        runPuzzle(puzzleInput);
+        run(testInput, "test");
+        run(puzzleInput, "puzzle");
     }
 
-    public static void runTest(String[] input) {
-        System.out.println("\n- Run code against testInput");
+    public static void run(String[] input, String type) {
+        System.out.println("\n- Run code against " + type);
         int idSumm = getIdSummForInput(input);
         System.out.println("Id TestSumm: " + idSumm);
-    }
-
-    public static void runPuzzle(String[] input) {
-        System.out.println("- Run code against puzzleInput");
-        int idSumm = getIdSummForInput(input);
-        System.out.println("Id PuzzleSumm: " + idSumm);
     }
 
     private static int getIdSummForInput(String[] input) {
