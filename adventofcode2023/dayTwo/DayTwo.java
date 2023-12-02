@@ -32,38 +32,34 @@ public class DayTwo {
     public static void runTest(String[] input) {
         System.out.println("\n- Run code against testInput");
         int idSumm = getIdSummForInput(input);
-        System.out.println("Id Summ: " + idSumm);
-    }
-
-    private static int getIdSummForInput(String[] input) {
-        List<Game> listOfGames = new ArrayList<>();
-        Arrays.asList(input).forEach(line -> listOfGames.add(processSingleLine(line)));
-        List<Game> possibleGames = findPossibleGames(listOfGames);
-        System.out.println("Numer of possible Games: " + possibleGames.size());
-        return possibleGames.stream().map(game -> game.id)
-                .collect(Collectors.summingInt(Integer::intValue));
+        System.out.println("Id TestSumm: " + idSumm);
     }
 
     public static void runPuzzle(String[] input) {
         System.out.println("- Run code against puzzleInput");
         int idSumm = getIdSummForInput(input);
-        System.out.println("Id Summ: " + idSumm);
+        System.out.println("Id PuzzleSumm: " + idSumm);
     }
 
-    public static Game processSingleLine(String line) {
+    private static int getIdSummForInput(String[] input) {
+        List<Game> listOfGames = new ArrayList<>();
+        Arrays.asList(input).forEach(line -> listOfGames.add(generateGameFromLine(line)));
+        List<Game> possibleGames = findPossibleGames(listOfGames);
+        System.out.println("Number of possible Games: " + possibleGames.size());
+        return possibleGames.stream().map(game -> game.id)
+                .collect(Collectors.summingInt(Integer::intValue));
+    }
 
 
-
-        List<SimpleEntry<Integer, String>> allEntriesInGame = generateNameAmountPairs(line);
-
+    public static Game generateGameFromLine(String line) {
+        List<SimpleEntry<Integer, String>> allPairsInGame = getColorAmountList(line);
         Game game = new Game();
-        setMaxCubeAmounts(game, allEntriesInGame);
+        createGameFromEntries(game, allPairsInGame);
         game.id = getGameId(line);
-
         return game;
     }
 
-    private static Game setMaxCubeAmounts(Game game,
+    private static Game createGameFromEntries(Game game,
             List<SimpleEntry<Integer, String>> allEntriesInGame) {
         allEntriesInGame.stream().forEach(entry -> {
             switch (entry.getValue()) {
@@ -86,19 +82,19 @@ public class DayTwo {
         return game;
     }
 
-    private static List<SimpleEntry<Integer, String>> generateNameAmountPairs(String line) {
+    private static List<SimpleEntry<Integer, String>> getColorAmountList(String line) {
         int startOfCubes = line.indexOf(":") + 1;
         line = line.substring(startOfCubes);
         String[] sets = line.split(";");
-        List<SimpleEntry<Integer, String>> allEntriesInGame = new ArrayList<>();
+        List<SimpleEntry<Integer, String>> allPairsInGame = new ArrayList<>();
 
         for (String set : sets) {
             String[] entries = set.split(",");
             for (String subentries : entries) {
-                allEntriesInGame.add(toNumberNamePair(subentries));
+                allPairsInGame.add(mapFieldToAmount(subentries));
             }
         }
-        return allEntriesInGame;
+        return allPairsInGame;
     }
 
     public static int findNumbers(String substring) {
@@ -114,7 +110,7 @@ public class DayTwo {
     }
 
 
-    public static SimpleEntry<Integer, String> toNumberNamePair(String entry) {
+    public static SimpleEntry<Integer, String> mapFieldToAmount(String entry) {
         int number = findNumbers(entry);
         String name = entry.replace(String.valueOf(number), "");
         name = name.trim();
