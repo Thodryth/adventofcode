@@ -28,28 +28,24 @@ public class DayTwo {
     }
 
     public static void run(String[] input, String type) {
-        System.out.println("\n- Run code against " + type);
-        int idSumm = getIdSummForInput(input);
-        System.out.println("Id TestSumm: " + idSumm);
+        List<Game> listOfGames = Arrays.asList(input).stream().map(DayTwo::generateGameFromLine)
+                .collect(Collectors.toList());
+
+
+        System.out.println("\nTestType: " + type + "\n Power of all games is: "
+                + getPowerOfAllGames(listOfGames) + " \n IdSumm for possible Games: "
+                + getIdSummForPossibleGames(listOfGames));
     }
 
-    private static int getIdSummForInput(String[] input) {
-        List<Game> listOfGames = new ArrayList<>();
-        Arrays.asList(input).forEach(line -> listOfGames.add(generateGameFromLine(line)));
+    private static int getIdSummForPossibleGames(List<Game> listOfGames) {
         List<Game> possibleGames = findPossibleGames(listOfGames);
-        System.out.println("Power Of All Games: " + getPowerOfAllGames(listOfGames));
-        System.out.println("Number of possible Games: " + possibleGames.size());
         return possibleGames.stream().map(game -> game.id)
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
     public static int getPowerOfAllGames(List<Game> allGames) {
-        return allGames.stream().map(DayTwo::getPowerOfGame)
+        return allGames.stream().map(Game::getPowerOfGame)
                 .collect(Collectors.summingInt(Integer::intValue));
-    }
-
-    public static int getPowerOfGame(Game game) {
-        return game.blue * game.red * game.green;
     }
 
     public static Game generateGameFromLine(String line) {
@@ -128,7 +124,6 @@ public class DayTwo {
         });
         return possibleGames;
     }
-
 }
 
 

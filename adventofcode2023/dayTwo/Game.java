@@ -10,4 +10,8 @@ public class Game {
     public String toString() {
         return "Game " + id + " Blue: " + blue + " Green: " + green + " Red: " + red;
     }
+
+    public int getPowerOfGame() {
+        return this.blue * this.red * this.green;
+    }
 }
