@@ -57,21 +57,20 @@ public class DayTwo {
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
-    public static int getPowerOfAllGames(List<Game> allGames) {
-        return allGames.stream().map(Game::getPowerOfGame)
+    public static int getPowerOfAllGames(List<Game> listOfGames) {
+        return listOfGames.stream().map(Game::getPowerOfGame)
                 .collect(Collectors.summingInt(Integer::intValue));
     }
 
     public static Game generateGameFromLine(String line) {
         List<SimpleEntry<Integer, String>> allPairsInGame = getColorAmountList(line);
-        Game game = new Game();
-        createGameFromEntries(game, allPairsInGame);
+        Game game = createGameFromEntries(allPairsInGame);
         game.id = findFirstNumber(line);
         return game;
     }
 
-    private static Game createGameFromEntries(Game game,
-            List<SimpleEntry<Integer, String>> allEntriesInGame) {
+    private static Game createGameFromEntries(List<SimpleEntry<Integer, String>> allEntriesInGame) {
+        Game game = new Game();
         allEntriesInGame.stream().forEach(entry -> {
             switch (entry.getValue()) {
                 case ("blue"):
