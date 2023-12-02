@@ -11,20 +11,16 @@ public class DayTemplate {
         var puzzleInput = reader.loadFileToArray("adventofcode2023/dayTemplate/puzzleInput");
         var testInput = reader.loadFileToArray("adventofcode2023/dayTemplate/testInput");
 
-        runTest(testInput);
+        run(testInput, "test");
 
-        runPuzzle(puzzleInput);
+        run(puzzleInput, "puzzle");
     }
 
-    public static void runTest(String[] input) {
-        System.out.println("- Run code against testInput");
+    public static void run(String[] input, String type) {
+        System.out.println("- Run code against " + type);
         System.out.println(input[0]);
     }
 
-    public static void runPuzzle(String[] input) {
-        System.out.println("- Run code against puzzleInput");
-        System.out.println(input[0]);
-    }
 
 }
 
