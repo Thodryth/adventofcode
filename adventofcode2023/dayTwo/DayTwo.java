@@ -40,15 +40,15 @@ public class DayTwo {
         List<Game> listOfGames = Arrays.asList(input).stream().map(DayTwo::generateGameFromLine)
                 .collect(Collectors.toList());
 
-        System.out.println("\nTestType: " + type + "\n Power of all games is: "
-                + getPowerOfAllGames(listOfGames) + " \n IdSumm for possible Games: "
-                + getIdSummForPossibleGames(listOfGames));
+        int power = getPowerOfAllGames(listOfGames);
+        int sum = getIdSummForPossibleGames(listOfGames);
 
-        results.put("POWER", getPowerOfAllGames(listOfGames));
-        results.put("SUM", getIdSummForPossibleGames(listOfGames));
+        System.out.println("\nTestType: " + type + "\n Power of all games is: " + power
+                + " \n IdSumm for possible Games: " + sum);
+
+        results.put("POWER", power);
+        results.put("SUM", sum);
         runTest(results);
-
-
     }
 
     private static int getIdSummForPossibleGames(List<Game> listOfGames) {
@@ -139,7 +139,7 @@ public class DayTwo {
         if (results.get("POWER") != PUZZLE_POWER && results.get("POWER") != TEST_POWER)
             throw new RuntimeException("Power calculation went wrong");
 
-        System.out.println("\n Tests against results run successfully");
+        System.out.println("\n Tests against results was successfull");
     }
 }
 
