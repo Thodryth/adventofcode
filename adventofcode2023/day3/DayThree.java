@@ -1,4 +1,4 @@
-package adventofcode2023.dayThree;
+package adventofcode2023.day3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ public class DayThree {
 
         Reader reader = new Reader();
 
-        String[] puzzleInput = reader.loadFileToArray("adventofcode2023/dayThree/puzzleInput");
-        String[] testInput = reader.loadFileToArray("adventofcode2023/dayThree/testInput");
+        String[] puzzleInput = reader.loadFileToArray("adventofcode2023/day3/puzzleInput");
+        String[] testInput = reader.loadFileToArray("adventofcode2023/day3/testInput");
 
         int testResult = run(testInput, "test");
 

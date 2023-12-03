@@ -1,4 +1,4 @@
-package adventofcode2023.dayThree;
+package adventofcode2023.day3;
 
 import java.util.ArrayList;
 import java.util.List;

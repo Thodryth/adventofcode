@@ -1,4 +1,4 @@
-package adventofcode2023.dayTwo;
+package adventofcode2023.day2;
 
 public class Game {
     int id;

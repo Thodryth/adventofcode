@@ -1,4 +1,4 @@
-package adventofcode2023.dayTwo;
+package adventofcode2023.day2;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ public class DayTwo {
 
         Reader reader = new Reader();
 
-        var puzzleInput = reader.loadFileToArray("adventofcode2023/dayTwo/puzzleInput");
+        var puzzleInput = reader.loadFileToArray("adventofcode2023/day2/puzzleInput");
 
-        var testInput = reader.loadFileToArray("adventofcode2023/dayTwo/testInput");
+        var testInput = reader.loadFileToArray("adventofcode2023/day2/testInput");
 
         run(testInput, "test");
         run(puzzleInput, "puzzle");

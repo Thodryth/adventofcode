@@ -1,4 +1,4 @@
-package adventofcode2023.dayOne;
+package adventofcode2023.day1;
 
 import defaults.Reader;
 
@@ -8,9 +8,9 @@ public class DayOne {
 
         Reader reader = new Reader();
 
-        var puzzleInput = reader.loadFileToArray("adventofcode2023/dayOne/puzzleInput");
-        var testInputOne = reader.loadFileToArray("adventofcode2023/dayOne/testInputOne");
-        var testInputTwo = reader.loadFileToArray("adventofcode2023/dayOne/testInputTwo");
+        var puzzleInput = reader.loadFileToArray("adventofcode2023/day1/puzzleInput");
+        var testInputOne = reader.loadFileToArray("adventofcode2023/day1/testInputOne");
+        var testInputTwo = reader.loadFileToArray("adventofcode2023/day1/testInputTwo");
 
         runTest(testInputOne, testInputTwo);
 
