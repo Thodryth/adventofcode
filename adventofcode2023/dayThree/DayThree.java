@@ -90,10 +90,6 @@ public class DayThree {
         return specialChars;
     }
 
-    public static boolean isNumber(String field) {
-        return field.matches("\\d+");
-    }
-
     public static boolean testResult(int test) {
         return test == TEST_SUMM;
     }
