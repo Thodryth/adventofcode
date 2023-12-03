@@ -8,6 +8,7 @@ import defaults.Reader;
 public class DayThree {
 
     private static final int TEST_SUMM = 4361;
+    private static final int PUZZLE_SUMM = 532428;
 
     public static void main(String[] args) {
 
@@ -18,10 +19,12 @@ public class DayThree {
 
         int testResult = run(testInput, "test");
 
-        if (testResult(testResult)) {
+        if (testResult == TEST_SUMM) {
             System.out.println("Test result is as expected. PuzzleInput next");
             System.out.println("TestResult: " + testResult);
-            System.out.println("PuzzleResult: " + run(puzzleInput, "puzzle"));
+            int puzzleResult = run(puzzleInput, "puzzle");
+            System.out.println("PuzzleResult: " + puzzleResult);
+            System.out.println("Is result still as expected? " + (puzzleResult == PUZZLE_SUMM));
         } else {
             System.out.println("Failed on test input! Puzzle input not used!");
         }
@@ -37,7 +40,18 @@ public class DayThree {
         List<Number> filteredNumbers = filterNumbers(specialChars, numbers);
         result = filteredNumbers.stream().map(number -> Integer.parseInt(number.valueAsString))
                 .collect(Collectors.summingInt(Integer::intValue));
+
+        System.out.println("Gear: " + getGear(specialChars));
+
         return result;
+    }
+
+    private static int getGear(List<SpecialChar> specialChars) {
+        return specialChars.stream().filter(c -> c.sign.equals("*") && c.neighbour.size() == 2)
+                .collect(Collectors.toList()).stream()
+                .map(c -> Integer.parseInt(c.neighbour.get(0).valueAsString)
+                        * Integer.parseInt(c.neighbour.get(1).valueAsString))
+                .collect(Collectors.summingInt(Integer::intValue));
     }
 
     public static List<Number> filterNumbers(List<SpecialChar> chars, List<Number> numbers) {
@@ -48,6 +62,7 @@ public class DayThree {
                     if (neighbour.equals(character.coordinates)
                             && !filteredNumbers.contains(number)) {
                         filteredNumbers.add(number);
+                        character.neighbour.add(number);
                     }
                 })));
 
@@ -81,17 +96,13 @@ public class DayThree {
             int j = 0;
             for (String c : line) {
                 if (!c.equals(".") && !c.matches("\\d")) {
-                    specialChars.add(new SpecialChar(new Coordinates(i, j)));
+                    specialChars.add(new SpecialChar(new Coordinates(i, j), c));
                 }
                 j++;
             }
             i++;
         }
         return specialChars;
-    }
-
-    public static boolean testResult(int test) {
-        return test == TEST_SUMM;
     }
 
     public static String[][] mapInputTo2dimArray(String[] input) {
