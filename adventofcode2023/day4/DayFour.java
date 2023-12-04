@@ -11,6 +11,7 @@ import defaults.Reader;
 public class DayFour {
 
     private static final int TEST_RESULT = 13;
+    private static final int TEST_AMOUNT = 30;
 
     public static void main(String[] args) {
 
@@ -20,10 +21,10 @@ public class DayFour {
         var testInput = reader.loadFileToArray("adventofcode2023/day4/testInput");
 
 
-        int result = run(testInput, "test");
+        int[] result = run(testInput, "test");
 
-        if (result == TEST_RESULT) {
-            System.out.println("TestResult is as expected");
+        if (result[0] == TEST_RESULT && result[1] == TEST_AMOUNT) {
+            System.out.println("TestResult and TestAmount are as expected");
             run(puzzleInput, "puzzle");
         } else {
             System.out.println("Unexpected testResult! Solving puzzle not started!");
@@ -31,28 +32,21 @@ public class DayFour {
         }
     }
 
-    public static int run(String[] input, String type) {
-        int result = 0;
+    public static int[] run(String[] input, String type) {
+        int[] result = {0, 0};
         System.out.println("- Run code against " + type);
         List<Card> cards = mapInputToCards(input);
-        result = cards.stream().map(Card::getValue)
+        result[0] = cards.stream().map(Card::getValue)
                 .collect(Collectors.summingInt(Integer::intValue));
-        System.out.println("Result: " + result);
+        System.out.println("Result: " + result[0]);
 
         for (Card card : cards) {
             multipleCardsForWins(cards, card);
-            var plop = cards.stream()
-                    .sorted((cardOne, cardTwo) -> Integer.compare(cardOne.id, cardTwo.id))
-                    .collect(Collectors.toList());
-
-            plop.forEach(System.out::println);
-            System.out.println("After card " + card.id);
         }
 
-
-        int resultTwo = cards.stream().map(Card::getAmount)
+        result[1] = cards.stream().map(Card::getAmount)
                 .collect(Collectors.summingInt(Integer::intValue));
-        System.out.println("Amount: " + resultTwo);
+        System.out.println("Amount: " + result[1]);
         return result;
     }
 
