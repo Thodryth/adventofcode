@@ -1,91 +1,208 @@
 package adventofcode2023.day5;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import defaults.Reader;
-
+/**
+ * TODO finish and unbroken this
+ */
 public class DayFive {
 
-    private final static int TASK_ONE_TEST_RESULT = 35;
+    static int seedToSoilMapStartLineIdx = 0;
+    static int soilToFertilizerMapStartLineIdx = 0;
+    static int fertilizerToWaterMapStartLineIdx = 0;
+    static int waterToLightMapStartLineIdx = 0;
+    static int lightToTemperatureStartLineIdx = 0;
+    static int temperatureToHumidityStartLineIdx = 0;
+    static int humidityToLocationStartLineIdx = 0;
 
-    public static void main(String[] args) {
+    static List<StepData> seedToSoilMapList = null;
+    static List<StepData> soilToFertilizerMapList = null;
+    static List<StepData> fertilizerToWaterMapList = null;
+    static List<StepData> waterToLightMapList = null;
+    static List<StepData> lightToTemperatureMapList = null;
+    static List<StepData> temperatureToHumidityMapList = null;
+    static List<StepData> humidityToLocationMapList = null;
 
-        Reader reader = new Reader();
-
-        var puzzleInput = reader.loadFileToArrayWithoutEmptyLines("adventofcode2023/day5/puzzleInput");
-        var testInput = reader.loadFileToArrayWithoutEmptyLines("adventofcode2023/day5/testInput");
-
-        int[] testResult = run(testInput, "test");
-        if (!(testResult[0] == TASK_ONE_TEST_RESULT) /* && result[1] == TEST_AMOUNT */) {
-            System.out.println("TestResult and TestAmount are as expected");
-            run(puzzleInput, "puzzle");
-        } else {
-            System.out.println("Unexpected testResult! Solving puzzle not started!");
-            System.out.println("Expected: " + TASK_ONE_TEST_RESULT + " Delivered: " + testResult[0]);
-        }
+    record StepData(long destinationRangeStart, long sourceRangeStart, long rangeLength) {
     }
 
-    public static int[] run(String[] input, String type) {
-
-        int[] testResults = { -1, -1 };
-
-        System.out.println("- Run code against " + type);
-        List<Seed> seeds = seeds(input[0]);
-        generateMap(input);
-
-        return testResults;
-
+    public static void main(String[] args) throws Exception {
+        long result = run();
+        System.out.println("Task 1" + result);
+        System.out.println("Task 2" + " is missing");
     }
 
-    public static List<Seed> seeds(String line) {
-        List<Seed> seeds = new ArrayList<>();
-        String workingLine = line.split(": ")[1];
-        Arrays.asList(workingLine.split(" ")).stream().forEach(nr -> seeds.add(new Seed(Integer.parseInt(nr))));
-        return seeds;
-    }
+    private static long run() throws IOException {
+        final List<String> lines = Files.readAllLines(Path.of("adventofcode2023/day5/puzzleInput"),
+                StandardCharsets.UTF_8);
 
-    public static Map<String, Map<Integer, Integer>> generateMap(String[] lines) {
-        Map<String, Map<Integer, Integer>> maps = new HashMap<>();
+        final List<Long> seeds = new ArrayList<>();
+        Arrays.stream(lines.get(0).split(": ")[1].split(" "))
+                .forEach(v -> seeds.add(Long.parseLong(v)));
 
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < 1640984363 ; i++) {
-            map.put(i, i);
-        }
-        String mapIdentifier = "";
-        for (int lineIndex = 1; lineIndex < lines.length; lineIndex++) {
-            String actualLine = lines[lineIndex];
-            if (actualLine.contains("-")) {
-                if (lineIndex > 1) {
-                    maps.put(mapIdentifier, map);
-                    map = new HashMap<>();
-                    mapIdentifier = actualLine;
-                }
-            } else {
-                String[] numbersInLine = actualLine.split(" ");
-                int destination = Integer.parseInt(numbersInLine[0]);
-                int source = Integer.parseInt(numbersInLine[1]);
-                int steps = Integer.parseInt(numbersInLine[2]);
+        findIndexesOfTypes(lines);
 
-                System.out.println(" Destination " + destination + " Source " + source + " Steps " + steps);
+        fillStepData(lines);
 
-                for (int i = 0; i < steps; i++) {
-                    map.replace(destination + i, destination + i);
-                    System.out.println(destination+i);
-                    System.out.println(map.get(destination+i));
-                }
+        final List<Long> soils = new ArrayList<>();
+        seeds.forEach(s -> soils.add(map(s, seedToSoilMapList)));
+        // seedsRange(seeds);
+        final List<Long> fertilizers = new ArrayList<>();
+        soils.forEach(s -> fertilizers.add(map(s, soilToFertilizerMapList)));
 
-                map.forEach((k, v) -> System.out.println(k + " - " + v));
+        final List<Long> waters = new ArrayList<>();
+        fertilizers.forEach(f -> waters.add(map(f, fertilizerToWaterMapList)));
 
+        final List<Long> lights = new ArrayList<>();
+        waters.forEach(w -> lights.add(map(w, waterToLightMapList)));
+
+        final List<Long> temperatures = new ArrayList<>();
+        lights.forEach(l -> temperatures.add(map(l, lightToTemperatureMapList)));
+
+        final List<Long> humidities = new ArrayList<>();
+        temperatures.forEach(t -> humidities.add(map(t, temperatureToHumidityMapList)));
+
+        final List<Long> locations = new ArrayList<>();
+        humidities.forEach(h -> locations.add(map(h, humidityToLocationMapList)));
+
+        long result = locations.get(0);
+        for (int i = 1; i < locations.size(); i++) {
+            if (locations.get(i) < result) {
+                result = locations.get(i);
             }
-
         }
-
-        return maps;
+        return result;
     }
 
+    private static void fillStepData(final List<String> lines) {
+        seedToSoilMapList = new ArrayList<>();
+        for (int i = seedToSoilMapStartLineIdx + 1; i < soilToFertilizerMapStartLineIdx - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            seedToSoilMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        soilToFertilizerMapList = new ArrayList<>();
+        for (int i = soilToFertilizerMapStartLineIdx + 1; i < fertilizerToWaterMapStartLineIdx
+                - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            soilToFertilizerMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        fertilizerToWaterMapList = new ArrayList<>();
+        for (int i = fertilizerToWaterMapStartLineIdx + 1; i < waterToLightMapStartLineIdx
+                - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            fertilizerToWaterMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        waterToLightMapList = new ArrayList<>();
+        for (int i = waterToLightMapStartLineIdx + 1; i < lightToTemperatureStartLineIdx - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            waterToLightMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        lightToTemperatureMapList = new ArrayList<>();
+        for (int i = lightToTemperatureStartLineIdx + 1; i < temperatureToHumidityStartLineIdx
+                - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            lightToTemperatureMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        temperatureToHumidityMapList = new ArrayList<>();
+        for (int i = temperatureToHumidityStartLineIdx + 1; i < humidityToLocationStartLineIdx
+                - 1; i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            temperatureToHumidityMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+
+        humidityToLocationMapList = new ArrayList<>();
+        for (int i = humidityToLocationStartLineIdx + 1; i < lines.size(); i++) {
+            long[] values =
+                    Arrays.stream(lines.get(i).split(" ")).mapToLong(Long::parseLong).toArray();
+            humidityToLocationMapList.add(new StepData(values[0], values[1], values[2]));
+        }
+    }
+
+    private static void findIndexesOfTypes(final List<String> lines) {
+        for (int i = 2; i < lines.size(); i++) {
+            if (lines.get(i).equals("seed-to-soil map:")) {
+                seedToSoilMapStartLineIdx = i;
+            } else if (lines.get(i).equals("soil-to-fertilizer map:")) {
+                soilToFertilizerMapStartLineIdx = i;
+            } else if (lines.get(i).equals("fertilizer-to-water map:")) {
+                fertilizerToWaterMapStartLineIdx = i;
+            } else if (lines.get(i).equals("water-to-light map:")) {
+                waterToLightMapStartLineIdx = i;
+            } else if (lines.get(i).equals("light-to-temperature map:")) {
+                lightToTemperatureStartLineIdx = i;
+            } else if (lines.get(i).equals("temperature-to-humidity map:")) {
+                temperatureToHumidityStartLineIdx = i;
+            } else if (lines.get(i).equals("humidity-to-location map:")) {
+                humidityToLocationStartLineIdx = i;
+            }
+        }
+    }
+
+    private static long map(final long source, final List<StepData> maps) {
+        for (final var map : maps) {
+            if (map.sourceRangeStart() <= source
+                    && map.sourceRangeStart() + map.rangeLength() > source) {
+                final long diff = source - map.sourceRangeStart();
+                return map.destinationRangeStart() + diff;
+            }
+        }
+
+        return source;
+    }
+
+    private static List<Long> seedsRange(List<Long> seeds) {
+        List<Long> seedsRange = new ArrayList<>();
+        seedsRange.addAll(seeds);
+        Long[][] pairs = new Long[seeds.size() / 2][2];
+        for (int i = 0; i < seeds.size() / 2; i++) {
+            pairs[i][0] = seeds.get(i);
+            pairs[i][1] = seeds.get(i + 1);
+        }
+
+        for (Long[] pair : pairs) {
+            for (int i = 1; i < pair[1]; i++) {
+                System.out.println(pair[i]);
+                seedsRange.add(i + pair[1]);
+            }
+        }
+
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }, executorService);
+            futures.add(future);
+        }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        executorService.shutdown();
+
+        return seedsRange;
+    }
 }
+
