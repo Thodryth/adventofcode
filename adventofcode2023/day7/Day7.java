@@ -1,7 +1,8 @@
 package adventofcode2023.day7;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import defaults.Reader;
@@ -26,10 +27,9 @@ public class Day7 {
         System.out.println("- Run code against " + type);
         List<Hand> hands = fillHands(input);
         hands.forEach(hand -> {
-            System.out.println("Hand: " + hand.getCards() + " Bid: " + hand.bid);
-            System.out.println("CARD: ");
-
-            hand.printAsciiValues();
+            System.out.println("Card: " + hand.rank);
+            System.out.println("Hand: " + hand.getCards() + " Bid: " + hand.bid + " Type: " + hand.type);
+            hand.calculateType();
         });
         System.out.println(input[0]);
     }
@@ -37,23 +37,31 @@ public class Day7 {
     public static List<Hand> fillHands(String[] lines) {
         List<Hand> hands = new ArrayList<>();
 
+        int i = 0;
         for (String line : lines) {
             Hand hand = new Hand();
             String[] split = line.split(" ");
             hand.bid = Integer.parseInt(split[1]);
-            hand.cards = mapCharToNumber(split[0].toCharArray());
+            hand.cards = mapCharToNumber(split[0].toCharArray(), hand);
+            hand.rank = i + 1;
+            hand.calculateType();
             hands.add(hand);
+            i++;
+        }
+        sortByType(hands);
+        for (int j = 0; j < hands.size(); j++) {
+            hands.get(j).rank = j + 1;
         }
         return hands;
     }
 
-    public static int[] mapCharToNumber(char[] hand) {
+    public static int[] mapCharToNumber(char[] cards, Hand hand) {
         int[] mappedCards = new int[5];
-        for (int i = 0; i < hand.length; i++) {
-            if (Character.isDigit(hand[i])) {
-                mappedCards[i] = Character.getNumericValue(hand[i]);
+        for (int i = 0; i < cards.length; i++) {
+            if (Character.isDigit(cards[i])) {
+                mappedCards[i] = Character.getNumericValue(cards[i]);
             } else {
-                switch (hand[i]) {
+                switch (cards[i]) {
                     case 'A':
                         mappedCards[i] = 13;
                         break;
@@ -73,12 +81,16 @@ public class Day7 {
                         break;
                 }
             }
+            hand.addCard(String.valueOf(cards[i]));
         }
-        Arrays.sort(mappedCards);
         return mappedCards;
     }
 
-    public static List<Hand> sortHandCards(List<Hand> hands) {
+    public static void sortByType(List<Hand> hands) {
+        Collections.sort(hands, (o1, o2) -> (Integer.valueOf(o1.type.value).compareTo(o2.type.value)));
+    }
+
+    public static Hand getHandType(Hand hands) {
 
         return hands;
     }
