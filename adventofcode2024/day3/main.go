@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 )
 
 func main() {
@@ -20,19 +21,38 @@ func main() {
 	for scanner.Scan() {
 
 		line := scanner.Text()
-		fmt.Println(line)
-		regexPattern := `mul\((\d+),(\d+)\)` // Sucht nach einer oder mehreren Ziffern
+		regexPattern := `mul\((\d+),(\d+)\)`
 
-		// Kompiliere den regulären Ausdruck
 		re := regexp.MustCompile(regexPattern)
 
-		// Finde alle Übereinstimmungen
 		matches := re.FindAllString(line, -1)
 
-		// Ergebnisse ausgeben
-		fmt.Println("Gefundene Matches:", matches)
+		// fmt.Println("Matches:", matches)
+
+		fmt.Println("\n")
+		fmt.Println()
+
+		calc(matches[0])
+
+		fmt.Print()
 
 	}
-	// Regulärer Ausdruck für Zahlen
+}
 
+func calc(match string) int {
+	regexPattern := `(\d+)`
+
+	re := regexp.MustCompile(regexPattern)
+
+	nums := re.FindAllString(match, -1)
+	fmt.Println(nums[0], nums[1])
+
+	num1, err := strconv.Atoi(nums[0])
+	num2, err := strconv.Atoi(nums[1])
+
+	if err != nil {
+		fmt.Println("Hoppala")
+	}
+
+	return num1 * num2
 }
